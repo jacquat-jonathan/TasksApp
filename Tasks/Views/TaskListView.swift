@@ -28,8 +28,12 @@ struct TaskListView: View {
                             OccurenceView(occurence: occurence)
                                 .swipeActions {
                                     Button("Delete") {
-                                        viewModel.showDeleteConfirmation = true
-                                        selectedOccurence = occurence
+                                        if occurence.task.occurences.count > 1 {
+                                            viewModel.showDeleteConfirmation = true
+                                            selectedOccurence = occurence
+                                        } else {
+                                            viewModel.deleteOccurence(occurence, context: context)
+                                        }
                                     }
                                     .tint(.red)
 
@@ -39,7 +43,7 @@ struct TaskListView: View {
                                     }.tint(.blue)
                                 }
                         }  // For Each
-                    } // Section
+                    }  // Section
                 }  // List: Sections
             }  // VStack
             .toolbar {
