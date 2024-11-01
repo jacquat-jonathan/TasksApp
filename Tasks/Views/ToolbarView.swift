@@ -11,7 +11,7 @@ struct ToolbarView: View {
     @StateObject var viewModel: TaskListViewModel
     var body: some View {
         Button {
-            viewModel.showingCreateOccurenceView = true
+            viewModel.showingCreateOccurrenceView = true
         } label: {
             Image(systemName: "plus.circle")
         }

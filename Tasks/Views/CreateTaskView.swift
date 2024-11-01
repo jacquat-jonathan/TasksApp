@@ -19,5 +19,5 @@ struct CreateTaskView: View {
 
 #Preview {
     CreateTaskView(isViewPresented: Binding(get: {return true}, set: {_ in}))
-        .modelContainer(for: Occurence.self)
+        .modelContainer(for: Occurrence.self)
 }

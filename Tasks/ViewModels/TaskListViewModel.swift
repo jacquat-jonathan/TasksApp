@@ -9,24 +9,24 @@ import Foundation
 import SwiftData
 
 class TaskListViewModel: ObservableObject {
-    @Published var showingCreateOccurenceView = false
-    @Published var showingEditOccurenceView = false
+    @Published var showingCreateOccurrenceView = false
+    @Published var showingEditOccurrenceView = false
     @Published var showDeleteConfirmation = false
     
     func setData(context: ModelContext) {
         let group = Group(name: "Appartement", tasks: [])
         
-        let task1 = Task(title: "Manger un poisson", priority: 2, dueDate: .now, hasReminder: false, repetitionType: 0, repetitionCount: 0, occurences: [], group: group)
-        let t1o1 = Occurence(dueDate: task1.dueDate, task: task1)
-        let t1o2 = Occurence(dueDate: Calendar.current.date(byAdding: .day, value: 1, to: task1.dueDate)!, task: task1)
-        task1.setOccurences([t1o1, t1o2])
+        let task1 = Task(title: "Manger un poisson", priority: 2, dueDate: .now, hasReminder: false, repetitionType: 0, repetitionCount: 0, occurrences: [], group: group)
+        let t1o1 = Occurrence(dueDate: task1.dueDate, task: task1)
+        let t1o2 = Occurrence(dueDate: Calendar.current.date(byAdding: .day, value: 1, to: task1.dueDate)!, task: task1)
+        task1.setOccurrences([t1o1, t1o2])
         context.insert(t1o1)
         context.insert(t1o2)
         context.insert(task1)
         
-        let task2 = Task(title: "Faire le ménage", priority: 4, dueDate: .now, hasReminder: false, repetitionType: 0, repetitionCount: 0, occurences: [], group: group)
-        let t2o1 = Occurence(dueDate: task2.dueDate, task: task2)
-        task2.setOccurences([t2o1])
+        let task2 = Task(title: "Faire le ménage", priority: 4, dueDate: .now, hasReminder: false, repetitionType: 0, repetitionCount: 0, occurrences: [], group: group)
+        let t2o1 = Occurrence(dueDate: task2.dueDate, task: task2)
+        task2.setOccurrences([t2o1])
         context.insert(t2o1)
         context.insert(task2)
         
@@ -36,36 +36,51 @@ class TaskListViewModel: ObservableObject {
     
     func getSections(tasks: [Task]) -> [ListSection] {
         var sections: [ListSection] = []
-        var allOccurences: [Occurence] = []
+        var allOccurrences: [Occurrence] = []
         for task in tasks {
-            for occurence in task.occurences {
-                allOccurences.append(occurence)
+            for occurrence in task.occurrences {
+                allOccurrences.append(occurrence)
             }
         }
-        allOccurences.sort(by: {$0.dueDate < $1.dueDate})
-        let dict = Dictionary(grouping: allOccurences) { occurence in
-            Calendar.current.startOfDay(for: occurence.dueDate)
+        let dict = Dictionary(grouping: allOccurrences) { occurrence in
+            Calendar.current.startOfDay(for: occurrence.dueDate)
         }
-        dict.forEach({sections.append(ListSection(date: $0.key, occurences: $0.value))})
+        dict.sorted(by: {$0.key < $1.key}).forEach({sections.append(ListSection(date: $0.key, occurrences: $0.value.sorted(by: {!$0.isDone && $1.isDone})))})
+        
         return sections
+    }
+    
+    private func sortOccurrences(_ occurrences: [Occurrence]) -> [Occurrence] {
+        return []
+    }
+    
+    private func printSections(_ sections: [ListSection]) {
+        for section in sections {
+            print("section: \(section.date)")
+        }
+    }
+    private func printSorted(_ items: [Occurrence]) {
+        for item in items {
+            print("\(item.dueDate): \(item.task.title)")
+        }
     }
     
     
     func deleteTask(_ task: Task, context: ModelContext) {
-        for occurence in task.occurences {
-            context.delete(occurence)
+        for occurrence in task.occurrences {
+            context.delete(occurrence)
         }
         context.delete(task)
         try? context.save()
     }
     
-    func deleteOccurence(_ occurence: Occurence, context: ModelContext) {
-        let task = occurence.task
-        if task.occurences.count > 1 {
-            task.occurences.remove(at: task.occurences.firstIndex(where: {$0.id == occurence.id})!)
-            context.delete(occurence)
+    func deleteOccurrence(_ occurrence: Occurrence, context: ModelContext) {
+        let task = occurrence.task
+        if task.occurrences.count > 1 {
+            task.occurrences.remove(at: task.occurrences.firstIndex(where: {$0.id == occurrence.id})!)
+            context.delete(occurrence)
         } else {
-            context.delete(occurence)
+            context.delete(occurrence)
             context.delete(task)
         }
         try? context.save()
@@ -75,9 +90,13 @@ class TaskListViewModel: ObservableObject {
         return date.formatted(.dateTime.year().month(.wide).day(.twoDigits))
     }
     
-    private func printElements(_ elements: [Occurence]) {
-        for element in elements {
-            print("\(element.task.title)")
+    func deleteAll(tasks: [Task], context: ModelContext) {
+        for task in tasks {
+            for occurrence in task.occurrences {
+                context.delete(occurrence)
+            }
+            context.delete(task)
         }
+        try? context.save()
     }
 }

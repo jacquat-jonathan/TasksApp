@@ -11,7 +11,7 @@ import SwiftUI
 struct TaskListView: View {
     @Environment(\.modelContext) private var context
     @StateObject private var viewModel = TaskListViewModel()
-    @State private var selectedOccurence: Occurence? = nil
+    @State private var selectedOccurrence: Occurrence? = nil
 
     @Query private var groups: [Group]
     @Query private var tasks: [Task]
@@ -20,27 +20,25 @@ struct TaskListView: View {
         NavigationView {
             VStack {
                 List(viewModel.getSections(tasks: tasks)) { section in
-                    Section(
-                        header: Text(viewModel.formatDate(section.date))
-                            .font(.headline)
-                    ) {
-                        ForEach(section.occurences) { occurence in
-                            OccurenceView(occurence: occurence)
+                    Section(header: Text(viewModel.formatDate(section.date)).font(.headline)) {
+                        ForEach(section.occurrences) { occurrence in
+                            OccurrenceView(occurrence: occurrence)
                                 .swipeActions {
                                     Button("Delete") {
-                                        if occurence.task.occurences.count > 1 {
+                                        if occurrence.task.occurrences.count > 1 {
                                             viewModel.showDeleteConfirmation = true
-                                            selectedOccurence = occurence
+                                            selectedOccurrence = occurrence
                                         } else {
-                                            viewModel.deleteOccurence(occurence, context: context)
+                                            viewModel.deleteOccurrence(occurrence, context: context)
                                         }
                                     }
                                     .tint(.red)
 
                                     Button("Update") {
                                         //viewModel.itemToUpdate = item
-                                        viewModel.showingEditOccurenceView = true
-                                    }.tint(.blue)
+                                        viewModel.showingEditOccurrenceView = true
+                                    }
+                                    .tint(.blue)
                                 }
                         }  // For Each
                     }  // Section
@@ -56,15 +54,15 @@ struct TaskListView: View {
             .navigationTitle(groups[0].name)
             .alert("You're deleting a task.", isPresented: $viewModel.showDeleteConfirmation) {
                 Button("Delete only this task", role: .destructive) {
-                    if selectedOccurence == nil {
+                    if selectedOccurrence == nil {
                         return
                     } else {
-                        viewModel.deleteOccurence(selectedOccurence!, context: context)
+                        viewModel.deleteOccurrence(selectedOccurrence!, context: context)
                     }
                 }
                 Button("Delete All") {
-                    if selectedOccurence != nil {
-                        viewModel.deleteTask(selectedOccurence!.task, context: context)
+                    if selectedOccurrence != nil {
+                        viewModel.deleteTask(selectedOccurrence!.task, context: context)
                     }
                 }
                 Button("Cancel", role: .cancel) {}
@@ -72,19 +70,19 @@ struct TaskListView: View {
                 Text("Do you want to delete all occurrences of this event, or only the selected occurrence")
             }  // Alert
         }  // NavigationView
-        .sheet(isPresented: $viewModel.showingCreateOccurenceView) {
+        .sheet(isPresented: $viewModel.showingCreateOccurrenceView) {
             CreateTaskView(
-                isViewPresented: $viewModel.showingCreateOccurenceView)
+                isViewPresented: $viewModel.showingCreateOccurrenceView)
         }  // Create view
-        .sheet(isPresented: $viewModel.showingEditOccurenceView) {
-            UpdateTaskView(isViewPresented: $viewModel.showingEditOccurenceView)
+        .sheet(isPresented: $viewModel.showingEditOccurrenceView) {
+            UpdateTaskView(isViewPresented: $viewModel.showingEditOccurrenceView)
         }
         .task({
             if groups.count == 0 {
                 context.insert(Group(name: "Default", tasks: []))
                 try? context.save()
             }
-            viewModel.setData(context: context)
+            //viewModel.setData(context: context)
         })
     }
 }

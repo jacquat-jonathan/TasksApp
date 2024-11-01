@@ -17,13 +17,13 @@ class Task: Identifiable, ObservableObject {
     var hasReminder: Bool
     var repetitionType: Int
     var repetitionCount: Int
-    var occurences: [Occurence]
+    var occurrences: [Occurrence]
     var group: Group?
     var category: Category?
 
     init(
         title: String, priority: Int, dueDate: Date, hasReminder: Bool,
-        repetitionType: Int, repetitionCount: Int, occurences: [Occurence], group: Group?
+        repetitionType: Int, repetitionCount: Int, occurrences: [Occurrence], group: Group?
     ) {
         self.id = UUID()
         self.title = title
@@ -32,7 +32,7 @@ class Task: Identifiable, ObservableObject {
         self.hasReminder = hasReminder
         self.repetitionType = repetitionType
         self.repetitionCount = repetitionCount
-        self.occurences = occurences
+        self.occurrences = occurrences
         self.group = group
     }
     
@@ -44,7 +44,7 @@ class Task: Identifiable, ObservableObject {
         self.hasReminder = false
         self.repetitionType = RepetitionTypeEnum.no.rawValue
         self.repetitionCount = 0
-        self.occurences = []
+        self.occurrences = []
     }
 
     func setTitle(_ title: String) {
@@ -76,15 +76,15 @@ class Task: Identifiable, ObservableObject {
         self.repetitionCount = count
     }
 
-    func setOccurences(_ occurences: [Occurence]) {
-        self.occurences = occurences
+    func setOccurrences(_ occurrences: [Occurrence]) {
+        self.occurrences = occurrences
     }
 
-    func addOccurence(_ occurence: Occurence) {
-        self.occurences.append(occurence)
+    func addOccurrence(_ occurrence: Occurrence) {
+        self.occurrences.append(occurrence)
     }
 
-    func removeOccurence(_ occurence: Occurence) {
-        self.occurences.removeAll(where: { $0.id == occurence.id })
+    func removeOccurrence(_ occurrence: Occurrence) {
+        self.occurrences.removeAll(where: { $0.id == occurrence.id })
     }
 }

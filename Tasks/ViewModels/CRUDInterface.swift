@@ -10,22 +10,22 @@ import SwiftData
 
 class CRUDInterface: ObservableObject {
     @Published var showAlert = false
-    @Published var occurence: Occurence = Occurence()
+    @Published var occurrence: Occurrence = Occurrence()
 
     init() {}
 
-    init(occurence: Occurence) {
-        self.occurence = occurence
+    init(occurrence: Occurrence) {
+        self.occurrence = occurrence
     }
 
     func save(context: ModelContext) {}
 
     var canSave: Bool {
-        guard !occurence.task.title.trimmingCharacters(in: .whitespaces).isEmpty
+        guard !occurrence.task.title.trimmingCharacters(in: .whitespaces).isEmpty
         else {
             return false
         }
-        guard occurence.task.dueDate >= Date().addingTimeInterval(-86400) else {
+        guard occurrence.task.dueDate >= Date().addingTimeInterval(-86400) else {
             return false
         }
         return true

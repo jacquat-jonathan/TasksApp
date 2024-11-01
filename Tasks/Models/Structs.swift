@@ -10,11 +10,11 @@ import Foundation
 struct ListSection: Identifiable {
     var id: UUID
     var date: Date
-    var occurences: [Occurence]
+    var occurrences: [Occurrence]
     
-    init(date: Date, occurences: [Occurence]) {
+    init(date: Date, occurrences: [Occurrence]) {
         self.id = UUID()
         self.date = date
-        self.occurences = occurences
+        self.occurrences = occurrences
     }
 }

@@ -13,7 +13,7 @@ struct TasksApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Task.self,
-            Occurence.self,
+            Occurrence.self,
             Group.self,
             Category.self
         ])

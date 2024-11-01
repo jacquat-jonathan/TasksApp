@@ -1,5 +1,5 @@
 //
-//  OccurenceView.swift
+//  OccurrenceView.swift
 //  Tasks
 //
 //  Created by Jonathan Jacquat on 31.10.2024.
@@ -8,13 +8,13 @@
 import SwiftUI
 import SwiftData
 
-struct OccurenceView: View {
+struct OccurrenceView: View {
     @Environment(\.modelContext) private var context
     
-    let occurence: Occurence
+    let occurrence: Occurrence
     
     func getColor() -> Color {
-        switch PriorityEnum.from(occurence.task.priority) {
+        switch PriorityEnum.from(occurrence.task.priority) {
         case .low:
             return Color.blue
         case .medium:
@@ -31,17 +31,17 @@ struct OccurenceView: View {
             Image(systemName: "tag.fill")
                 .foregroundStyle(getColor())
                 .padding(.trailing)
-            Text(occurence.task.title)
+            Text(occurrence.task.title)
                 .font(.body)
 
             Spacer()
 
             Button {
-                occurence.setDone(!occurence.isDone)
+                occurrence.setDone(!occurrence.isDone)
                 //try? context.save()
             } label: {
                 Image(
-                    systemName: occurence.isDone ? "checkmark.circle.fill" : "circle"
+                    systemName: occurrence.isDone ? "checkmark.circle.fill" : "circle"
                 )
                 .foregroundStyle(.blue)
             }
@@ -51,6 +51,6 @@ struct OccurenceView: View {
 }
 
 #Preview {
-    OccurenceView(occurence: Occurence(dueDate: .now, task: Task()))
-        .modelContainer(for: Occurence.self)
+    OccurrenceView(occurrence: Occurrence(dueDate: .now, task: Task()))
+        .modelContainer(for: Occurrence.self)
 }

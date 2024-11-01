@@ -1,5 +1,5 @@
 //
-//  Occurence.swift
+//  Occurrence.swift
 //  Tasks
 //
 //  Created by Jonathan Jacquat on 30.10.2024.
@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class Occurence: Identifiable, ObservableObject {
+class Occurrence: Identifiable, ObservableObject {
     @Attribute(.unique) var id: UUID
     var dueDate: Date
     var isDone: Bool

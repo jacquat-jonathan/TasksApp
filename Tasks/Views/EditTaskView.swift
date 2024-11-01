@@ -22,13 +22,13 @@ struct EditTaskView: View {
                 .padding(.top, 25)
             Form {
                 Section("Title") {
-                    TextField("Title", text: $viewModel.occurence.task.title)
+                    TextField("Title", text: $viewModel.occurrence.task.title)
                             .textFieldStyle(DefaultTextFieldStyle())
                 } // Section: Title
                 
                 Section("Due date") {
                     DatePicker(
-                        "Due Date", selection: $viewModel.occurence.dueDate,
+                        "Due Date", selection: $viewModel.occurrence.dueDate,
                         displayedComponents: .date
                     )
                     .datePickerStyle(.compact)
@@ -36,7 +36,7 @@ struct EditTaskView: View {
                 
                 Section("Recurrence") {
                     Picker(
-                        selection: $viewModel.occurence.task.repetitionType,
+                        selection: $viewModel.occurrence.task.repetitionType,
                         label: Text("Repeat")
                     ) {
                         ForEach(RepetitionTypeEnum.allCases) { rep in
@@ -46,7 +46,7 @@ struct EditTaskView: View {
                     .pickerStyle(.menu)
                     HStack {
                         Picker(
-                            selection: $viewModel.occurence.task.repetitionCount,
+                            selection: $viewModel.occurrence.task.repetitionCount,
                             label: Text("For")
                         ) {
                             ForEach((0...100), id: \.self) {
@@ -61,7 +61,7 @@ struct EditTaskView: View {
                 
                 Section("Task priority") {
                     Picker(
-                        selection: $viewModel.occurence.task.priority,
+                        selection: $viewModel.occurrence.task.priority,
                         label: Text("Priority")
                     ) {
                         ForEach(PriorityEnum.allCases, id: \.self) { priority in

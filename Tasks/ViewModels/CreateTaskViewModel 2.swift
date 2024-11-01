@@ -10,32 +10,22 @@ import SwiftData
 
 class CreateTaskViewModel: CRUDInterface {
     override func save(context: ModelContext) {
-        print("save")
-        let task = occurence.task
-        // insert occurence
-        context.insert(occurence)
-        // Create an array of occurences
-        var occurences: [Occurence] = [occurence]
-
-        // for each rep count, create a copy of occurence + repetitionType
+        let task = occurrence.task
+        context.insert(occurrence)
+        var occurrences: [Occurrence] = [occurrence]
         if task.repetitionType != RepetitionTypeEnum.no.rawValue {
             for rep in 1...task.repetitionCount {
-                let newDate = getNextDate(
-                    by: RepetitionTypeEnum.from(task.repetitionType), to: task.dueDate,
-                    value: rep)
-                let occ = Occurence(dueDate: newDate, task: task)
+                let newDate = getNextDate(by: RepetitionTypeEnum.from(task.repetitionType), to: task.dueDate, value: rep)
+                let occ = Occurrence(dueDate: newDate, task: task)
                 context.insert(occ)
-                occurences.append(occ)
+                occurrences.append(occ)
             }
-            // Set the task occurences to the newly created occurrences array
-            task.occurences = occurences
         }
-        // insert task
+        task.occurrences = occurrences
         context.insert(task)
-        // Save the context
         try? context.save()
     }
-
+    
     private func getNextDate(by: RepetitionTypeEnum, to: Date, value: Int) -> Date {
         let calendar = Calendar.current
         switch by {

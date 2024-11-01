@@ -11,7 +11,7 @@ import SwiftData
 class UpdateTaskViewModel: CRUDInterface {
     override func save(context: ModelContext) {// Update logic
         print("update")
-        context.insert(self.occurence)
+        context.insert(self.occurrence)
         try? context.save()
         print("saved")
     }
