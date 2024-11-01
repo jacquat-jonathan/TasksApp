@@ -8,8 +8,14 @@
 import SwiftUI
 
 struct UpdateTaskView: View {
-    @StateObject var viewModel: UpdateTaskViewModel = UpdateTaskViewModel()
+    @StateObject var viewModel: UpdateTaskViewModel
     @Binding var isViewPresented: Bool
+    
+    init(occurrence: Occurrence, isViewPresented: Binding<Bool>) {
+        self._viewModel = StateObject(wrappedValue: UpdateTaskViewModel(occurrence: occurrence))
+        self._isViewPresented = isViewPresented
+    }
+    
     var body: some View {
         NavigationView {
             EditTaskView(viewModel: viewModel, isViewPresented: $isViewPresented, header: "Update task")
@@ -18,6 +24,6 @@ struct UpdateTaskView: View {
 }
 
 #Preview {
-    UpdateTaskView(isViewPresented: Binding(get: {return true}, set: {_ in}))
+    UpdateTaskView(occurrence: Occurrence(), isViewPresented: Binding(get: {return true}, set: {_ in}))
         .modelContainer(for: Occurrence.self)
 }

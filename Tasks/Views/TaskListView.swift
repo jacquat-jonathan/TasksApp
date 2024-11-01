@@ -26,8 +26,8 @@ struct TaskListView: View {
                                 .swipeActions {
                                     Button("Delete") {
                                         if occurrence.task.occurrences.count > 1 {
-                                            viewModel.showDeleteConfirmation = true
                                             selectedOccurrence = occurrence
+                                            viewModel.showDeleteConfirmation = true
                                         } else {
                                             viewModel.deleteOccurrence(occurrence, context: context)
                                         }
@@ -35,7 +35,7 @@ struct TaskListView: View {
                                     .tint(.red)
 
                                     Button("Update") {
-                                        //viewModel.itemToUpdate = item
+                                        selectedOccurrence = occurrence
                                         viewModel.showingEditOccurrenceView = true
                                     }
                                     .tint(.blue)
@@ -51,7 +51,7 @@ struct TaskListView: View {
                         ToolbarView(viewModel: viewModel)
                     })
             }  // Toolbar
-            .navigationTitle(groups[0].name)
+            .navigationTitle("Tasks")
             .alert("You're deleting a task.", isPresented: $viewModel.showDeleteConfirmation) {
                 Button("Delete only this task", role: .destructive) {
                     if selectedOccurrence == nil {
@@ -71,11 +71,10 @@ struct TaskListView: View {
             }  // Alert
         }  // NavigationView
         .sheet(isPresented: $viewModel.showingCreateOccurrenceView) {
-            CreateTaskView(
-                isViewPresented: $viewModel.showingCreateOccurrenceView)
+            CreateTaskView(isViewPresented: $viewModel.showingCreateOccurrenceView)
         }  // Create view
         .sheet(isPresented: $viewModel.showingEditOccurrenceView) {
-            UpdateTaskView(isViewPresented: $viewModel.showingEditOccurrenceView)
+            UpdateTaskView(occurrence: selectedOccurrence!, isViewPresented: $viewModel.showingEditOccurrenceView)
         }
         .task({
             if groups.count == 0 {
