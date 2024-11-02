@@ -6,9 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ToolbarView: View {
     @StateObject var viewModel: TaskListViewModel
+    @Query private var tasks: [Task]
+    @Environment(\.modelContext) private var context
+    
     var body: some View {
         Button {
             viewModel.showingCreateOccurrenceView = true
@@ -16,10 +20,14 @@ struct ToolbarView: View {
             Image(systemName: "plus.circle")
         }
         
-        Button {
-            print("more options")
+        Menu {
+            Button(role: .destructive) {
+                viewModel.deleteAll(tasks: tasks, context: context)
+            } label: {
+                Label("Delete All", systemImage: "trash")
+            }
         } label: {
-            Image(systemName: "ellipsis")
+            Image(systemName: "ellipsis.circle")
         }
     }
 }

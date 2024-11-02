@@ -13,6 +13,7 @@ class TaskListViewModel: ObservableObject {
     @Published var showingEditOccurrenceView = false
     @Published var showingEditOccurrenceAlert = false
     @Published var showingDeleteConfirmation = false
+    @Published var showingMoreOptions = false
     
     func setData(context: ModelContext) {
         let group = Group(name: "Appartement", tasks: [])
