@@ -19,6 +19,22 @@ class CRUDInterface: ObservableObject {
     }
 
     func save(context: ModelContext) {}
+    
+    func getNextDate(by: RepetitionTypeEnum, to: Date, value: Int) -> Date {
+        let calendar = Calendar.current
+        switch by {
+        case .daily:
+            return calendar.date(byAdding: .day, value: value, to: to)!
+        case .weekly:
+            return calendar.date(byAdding: .day, value: 7 * value, to: to)!
+        case .monthly:
+            return calendar.date(byAdding: .month, value: value, to: to)!
+        case .yearly:
+            return calendar.date(byAdding: .year, value: value, to: to)!
+        case .no:
+            return to
+        }
+    }
 
     var canSave: Bool {
         guard !occurrence.task.title.trimmingCharacters(in: .whitespaces).isEmpty

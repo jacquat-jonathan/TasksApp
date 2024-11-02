@@ -38,7 +38,6 @@ struct OccurrenceView: View {
 
             Button {
                 occurrence.setDone(!occurrence.isDone)
-                //try? context.save()
             } label: {
                 Image(
                     systemName: occurrence.isDone ? "checkmark.circle.fill" : "circle"
