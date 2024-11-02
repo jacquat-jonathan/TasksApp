@@ -33,7 +33,7 @@ struct EditTaskView: View {
                     )
                     .datePickerStyle(.compact)
                 }  // Section: Due date
-                if viewModel.updateAll {
+                if viewModel.updateAll || viewModel.create {
                     Section("Recurrence") {
                         Picker(
                             selection: $viewModel.occurrence.task.repetitionType,

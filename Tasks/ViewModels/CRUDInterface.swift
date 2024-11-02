@@ -12,8 +12,11 @@ class CRUDInterface: ObservableObject {
     @Published var showAlert = false
     @Published var occurrence: Occurrence = Occurrence()
     @Published var updateAll: Bool = false
+    @Published var create: Bool = false
 
-    init() {}
+    init() {
+        self.create = true
+    }
 
     init(occurrence: Occurrence) {
         self.occurrence = occurrence
