@@ -11,8 +11,8 @@ struct UpdateTaskView: View {
     @StateObject var viewModel: UpdateTaskViewModel
     @Binding var isViewPresented: Bool
     
-    init(occurrence: Occurrence, isViewPresented: Binding<Bool>) {
-        self._viewModel = StateObject(wrappedValue: UpdateTaskViewModel(occurrence: occurrence))
+    init(occurrence: Occurrence, updateAll: Bool, isViewPresented: Binding<Bool>) {
+        self._viewModel = StateObject(wrappedValue: UpdateTaskViewModel(occurrence: occurrence, updateAll: updateAll))
         self._isViewPresented = isViewPresented
     }
     
@@ -24,6 +24,6 @@ struct UpdateTaskView: View {
 }
 
 #Preview {
-    UpdateTaskView(occurrence: Occurrence(), isViewPresented: Binding(get: {return true}, set: {_ in}))
+    UpdateTaskView(occurrence: Occurrence(), updateAll: true, isViewPresented: Binding(get: {return true}, set: {_ in}))
         .modelContainer(for: Occurrence.self)
 }

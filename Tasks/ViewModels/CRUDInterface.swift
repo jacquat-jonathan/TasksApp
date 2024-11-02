@@ -11,11 +11,17 @@ import SwiftData
 class CRUDInterface: ObservableObject {
     @Published var showAlert = false
     @Published var occurrence: Occurrence = Occurrence()
+    @Published var updateAll: Bool = false
 
     init() {}
 
     init(occurrence: Occurrence) {
         self.occurrence = occurrence
+    }
+    
+    init(occurrence: Occurrence, updateAll: Bool) {
+        self.occurrence = occurrence
+        self.updateAll = updateAll
     }
 
     func save(context: ModelContext) {}

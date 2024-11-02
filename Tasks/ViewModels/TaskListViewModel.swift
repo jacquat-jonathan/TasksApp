@@ -11,7 +11,8 @@ import SwiftData
 class TaskListViewModel: ObservableObject {
     @Published var showingCreateOccurrenceView = false
     @Published var showingEditOccurrenceView = false
-    @Published var showDeleteConfirmation = false
+    @Published var showingEditOccurrenceAlert = false
+    @Published var showingDeleteConfirmation = false
     
     func setData(context: ModelContext) {
         let group = Group(name: "Appartement", tasks: [])
@@ -78,6 +79,7 @@ class TaskListViewModel: ObservableObject {
         let task = occurrence.task
         if task.occurrences.count > 1 {
             task.occurrences.remove(at: task.occurrences.firstIndex(where: {$0.id == occurrence.id})!)
+            task.dueDate = task.occurrences.first!.dueDate
             context.delete(occurrence)
         } else {
             context.delete(occurrence)
