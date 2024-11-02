@@ -14,7 +14,7 @@ struct OccurrenceView: View {
     let occurrence: Occurrence
     
     func getColor() -> Color {
-        switch PriorityEnum.from(occurrence.task.priority) {
+        switch PriorityEnum.from(occurrence.priority) {
         case .low:
             return Color.blue
         case .medium:
@@ -31,7 +31,7 @@ struct OccurrenceView: View {
             Image(systemName: "tag.fill")
                 .foregroundStyle(getColor())
                 .padding(.trailing)
-            Text(occurrence.task.title)
+            Text(occurrence.title)
                 .font(.body)
 
             Spacer()
@@ -50,6 +50,6 @@ struct OccurrenceView: View {
 }
 
 #Preview {
-    OccurrenceView(occurrence: Occurrence(dueDate: .now, task: Task()))
+    OccurrenceView(occurrence: Occurrence(title: "Test title", dueDate: .now, priority: PriorityEnum.low.rawValue, hasReminder: false, task: Task()))
         .modelContainer(for: Occurrence.self)
 }

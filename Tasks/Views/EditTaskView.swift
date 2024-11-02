@@ -10,7 +10,7 @@ import SwiftUI
 struct EditTaskView: View {
     @StateObject var viewModel: CRUDInterface
     @Environment(\.modelContext) private var context
-    
+
     @Binding var isViewPresented: Bool
     let header: String
 
@@ -22,46 +22,47 @@ struct EditTaskView: View {
                 .padding(.top, 25)
             Form {
                 Section("Title") {
-                    TextField("Title", text: $viewModel.occurrence.task.title)
-                            .textFieldStyle(DefaultTextFieldStyle())
-                } // Section: Title
-                
+                    TextField("Title", text: $viewModel.occurrence.title)
+                        .textFieldStyle(DefaultTextFieldStyle())
+                }  // Section: Title
+
                 Section("Due date") {
                     DatePicker(
                         "Due Date", selection: $viewModel.occurrence.dueDate,
                         displayedComponents: .date
                     )
                     .datePickerStyle(.compact)
-                } // Section: Due date
-                
-                Section("Recurrence") {
-                    Picker(
-                        selection: $viewModel.occurrence.task.repetitionType,
-                        label: Text("Repeat")
-                    ) {
-                        ForEach(RepetitionTypeEnum.allCases) { rep in
-                            Text(rep.name).tag(rep.rawValue)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                    HStack {
+                }  // Section: Due date
+                if viewModel.updateAll {
+                    Section("Recurrence") {
                         Picker(
-                            selection: $viewModel.occurrence.task.repetitionCount,
-                            label: Text("For")
+                            selection: $viewModel.occurrence.task.repetitionType,
+                            label: Text("Repeat")
                         ) {
-                            ForEach((0...100), id: \.self) {
-                                Text("\($0)")
+                            ForEach(RepetitionTypeEnum.allCases) { rep in
+                                Text(rep.name).tag(rep.rawValue)
                             }
                         }
-                        .pickerStyle(.automatic)
-                        Text("times")
-                            .fontWeight(.thin)
-                    }
-                } // Section: Recurrence
-                
+                        .pickerStyle(.menu)
+                        HStack {
+                            Picker(
+                                selection: $viewModel.occurrence.task.repetitionCount,
+                                label: Text("For")
+                            ) {
+                                ForEach((0...100), id: \.self) {
+                                    Text("\($0)")
+                                }
+                            }
+                            .pickerStyle(.automatic)
+                            Text("times")
+                                .fontWeight(.thin)
+                        }
+                    }  // Section: Recurrence
+                }
+
                 Section("Task priority") {
                     Picker(
-                        selection: $viewModel.occurrence.task.priority,
+                        selection: $viewModel.occurrence.priority,
                         label: Text("Priority")
                     ) {
                         ForEach(PriorityEnum.allCases, id: \.self) { priority in
@@ -69,8 +70,8 @@ struct EditTaskView: View {
                         }
                     }
                     .pickerStyle(.menu)
-                } // Section: Task Priority
-                
+                }  // Section: Task Priority
+
                 Button(action: {
                     if viewModel.canSave {
                         viewModel.save(context: context)
@@ -84,7 +85,7 @@ struct EditTaskView: View {
                 }
                 .buttonStyle(PlainButtonStyle())
                 // Save button
-            } // Form
+            }  // Form
             .alert(isPresented: $viewModel.showAlert) {
                 Alert(
                     title: Text("Error"),
@@ -92,7 +93,7 @@ struct EditTaskView: View {
                         "Please fill in all fields and select due date that is today or newer."
                     ))
             }
-        } // VStack
+        }  // VStack
     }
 }
 

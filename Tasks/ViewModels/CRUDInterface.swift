@@ -43,11 +43,11 @@ class CRUDInterface: ObservableObject {
     }
 
     var canSave: Bool {
-        guard !occurrence.task.title.trimmingCharacters(in: .whitespaces).isEmpty
+        guard !occurrence.title.trimmingCharacters(in: .whitespaces).isEmpty
         else {
             return false
         }
-        guard occurrence.task.dueDate >= Date().addingTimeInterval(-86400) else {
+        guard occurrence.dueDate >= Date().addingTimeInterval(-86400) else {
             return false
         }
         return true

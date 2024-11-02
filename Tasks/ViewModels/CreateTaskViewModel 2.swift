@@ -16,7 +16,7 @@ class CreateTaskViewModel: CRUDInterface {
         if task.repetitionType != RepetitionTypeEnum.no.rawValue {
             for rep in 1...task.repetitionCount {
                 let newDate = getNextDate(by: RepetitionTypeEnum.from(task.repetitionType), to: task.dueDate, value: rep)
-                let occ = Occurrence(dueDate: newDate, task: task)
+                let occ = Occurrence(title: occurrence.title, dueDate: newDate, priority: occurrence.priority, hasReminder: occurrence.hasReminder, task: task)
                 context.insert(occ)
                 occurrences.append(occ)
             }

@@ -11,10 +11,7 @@ import SwiftData
 @Model
 class Task: Identifiable, ObservableObject {
     @Attribute(.unique) var id: UUID
-    var title: String
-    var priority: Int
     var dueDate: Date
-    var hasReminder: Bool
     var repetitionType: Int
     var repetitionCount: Int
     var occurrences: [Occurrence]
@@ -22,45 +19,26 @@ class Task: Identifiable, ObservableObject {
     var category: Category?
 
     init(
-        title: String, priority: Int, dueDate: Date, hasReminder: Bool,
-        repetitionType: Int, repetitionCount: Int, occurrences: [Occurrence], group: Group?
+        dueDate: Date, repetitionType: Int, repetitionCount: Int, occurrences: [Occurrence], group: Group?
     ) {
         self.id = UUID()
-        self.title = title
-        self.priority = priority
         self.dueDate = dueDate
-        self.hasReminder = hasReminder
         self.repetitionType = repetitionType
         self.repetitionCount = repetitionCount
         self.occurrences = occurrences
         self.group = group
     }
-    
+
     init() {
         self.id = UUID()
-        self.title = "Ceci est une tâche test"
-        self.priority = PriorityEnum.low.rawValue
         self.dueDate = .now
-        self.hasReminder = false
         self.repetitionType = RepetitionTypeEnum.no.rawValue
         self.repetitionCount = 0
         self.occurrences = []
     }
 
-    func setTitle(_ title: String) {
-        self.title = title
-    }
-
-    func setPriority(_ prio: Int) {
-        self.priority = prio
-    }
-
     func setDueDate(_ date: Date) {
         self.dueDate = date
-    }
-
-    func setHasReminder(_ state: Bool) {
-        self.hasReminder = state
     }
 
     func setRepetitionType(_ value: Int) {

@@ -17,16 +17,16 @@ class TaskListViewModel: ObservableObject {
     func setData(context: ModelContext) {
         let group = Group(name: "Appartement", tasks: [])
         
-        let task1 = Task(title: "Manger un poisson", priority: 2, dueDate: .now, hasReminder: false, repetitionType: 0, repetitionCount: 0, occurrences: [], group: group)
-        let t1o1 = Occurrence(dueDate: task1.dueDate, task: task1)
-        let t1o2 = Occurrence(dueDate: Calendar.current.date(byAdding: .day, value: 1, to: task1.dueDate)!, task: task1)
+        let task1 = Task(dueDate: .now, repetitionType: 1, repetitionCount: 1, occurrences: [], group: group)
+        let t1o1 = Occurrence(title: "Manger un poisson", dueDate: task1.dueDate, priority: 2, hasReminder: false, task: task1)
+        let t1o2 = Occurrence(title: "Manger un poisson", dueDate: Calendar.current.date(byAdding: .day, value: 1, to: task1.dueDate)!, priority: 2, hasReminder: false, task: task1)
         task1.setOccurrences([t1o1, t1o2])
         context.insert(t1o1)
         context.insert(t1o2)
         context.insert(task1)
         
-        let task2 = Task(title: "Faire le ménage", priority: 4, dueDate: .now, hasReminder: false, repetitionType: 0, repetitionCount: 0, occurrences: [], group: group)
-        let t2o1 = Occurrence(dueDate: task2.dueDate, task: task2)
+        let task2 = Task(dueDate: .now, repetitionType: 0, repetitionCount: 0, occurrences: [], group: group)
+        let t2o1 = Occurrence(title: "Faire le ménage", dueDate: task2.dueDate, priority: 4, hasReminder: false, task: task2)
         task2.setOccurrences([t2o1])
         context.insert(t2o1)
         context.insert(task2)
@@ -50,22 +50,6 @@ class TaskListViewModel: ObservableObject {
         
         return sections
     }
-    
-    private func sortOccurrences(_ occurrences: [Occurrence]) -> [Occurrence] {
-        return []
-    }
-    
-    private func printSections(_ sections: [ListSection]) {
-        for section in sections {
-            print("section: \(section.date)")
-        }
-    }
-    private func printSorted(_ items: [Occurrence]) {
-        for item in items {
-            print("\(item.dueDate): \(item.task.title)")
-        }
-    }
-    
     
     func deleteTask(_ task: Task, context: ModelContext) {
         for occurrence in task.occurrences {
