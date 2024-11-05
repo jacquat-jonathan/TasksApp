@@ -100,7 +100,7 @@ struct TaskListView: View {
                 context.insert(Group(name: "Default", tasks: []))
                 try? context.save()
             }
-            viewModel.setData(context: context)
+            //viewModel.setData(context: context)
         })
     }
 }

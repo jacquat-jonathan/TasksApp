@@ -70,7 +70,7 @@ class TaskListViewModel: ObservableObject {
             context.delete(occurrence)
         }
         context.delete(task)
-        try? context.save()
+        saveContext(context)
     }
 
     func deleteOccurrence(_ occurrence: Occurrence, context: ModelContext) {
@@ -83,7 +83,7 @@ class TaskListViewModel: ObservableObject {
             context.delete(occurrence)
             context.delete(task)
         }
-        try? context.save()
+        saveContext(context)
     }
 
     func formatDate(_ date: Date) -> String {
@@ -97,6 +97,29 @@ class TaskListViewModel: ObservableObject {
             }
             context.delete(task)
         }
+        saveContext(context)
+    }
+    
+    func deleteAllDone(tasks: [Task], context: ModelContext) {
+        for task in tasks {
+            var occurrences: [Occurrence] = []
+            for occurrence in task.occurrences {
+                if occurrence.isDone {
+                    context.delete(occurrence)
+                } else {
+                    occurrences.append(occurrence)
+                }
+            }
+            if occurrences.count > 0 {
+                task.occurrences = occurrences
+            } else {
+                context.delete(task)
+            }
+        }
+        saveContext(context)
+    }
+    
+    private func saveContext(_ context: ModelContext) {
         try? context.save()
     }
 }

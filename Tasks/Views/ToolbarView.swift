@@ -26,6 +26,11 @@ struct ToolbarView: View {
             } label: {
                 Label("Delete All", systemImage: "trash")
             }
+            Button {
+                viewModel.deleteAllDone(tasks: tasks, context: context)
+            } label: {
+                Label("Move all done tasks", systemImage: "archivebox")
+            }
         } label: {
             Image(systemName: "ellipsis.circle")
         }
