@@ -30,6 +30,10 @@ struct CalendarView: View {
                     Text(day).font(.subheadline).foregroundColor(.gray)
                 }
 
+                ForEach(0..<leadingSpaces, id: \.self) { _ in
+                    Text("")
+                }
+
                 ForEach(viewModel.daysInMonth, id: \.self) { date in
                     Text("\(dayFormatter.string(from: date))")
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -39,11 +43,20 @@ struct CalendarView: View {
                 }
             }
             .padding()
+            Spacer()
         }
     }
 
     private var dayInitials: [String] {
         ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    }
+
+    private var leadingSpaces: Int {
+        guard let firstDayOfMonth = viewModel.calendar.date(from: viewModel.calendar.dateComponents([.year, .month], from: viewModel.currentDate)),
+              let weekday = viewModel.calendar.dateComponents([.weekday], from: firstDayOfMonth).weekday else {
+            return 0
+        }
+        return (weekday + 5) % 7
     }
 
     private func isToday(_ date: Date) -> Bool {
