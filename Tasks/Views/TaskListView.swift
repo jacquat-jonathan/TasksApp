@@ -37,7 +37,12 @@ struct TaskListView: View {
 
                                     Button("Update") {
                                         selectedOccurrence = occurrence
-                                        viewModel.showingEditOccurrenceAlert = true
+                                        if occurrence.task.occurrences.count > 1 {
+                                            viewModel.showingEditOccurrenceAlert = true
+                                        } else {
+                                            updateAll = true
+                                            viewModel.showingEditOccurrenceView = true
+                                        }
                                     }
                                     .tint(.blue)
                                 }
@@ -95,7 +100,7 @@ struct TaskListView: View {
                 context.insert(Group(name: "Default", tasks: []))
                 try? context.save()
             }
-            //viewModel.setData(context: context)
+            viewModel.setData(context: context)
         })
     }
 }
