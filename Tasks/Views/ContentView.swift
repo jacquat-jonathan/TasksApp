@@ -20,7 +20,7 @@ struct ContentView: View {
                     .tabItem {
                         Label("Tasks", systemImage: "pencil.and.list.clipboard")
                     }
-                Text("Calendar")
+                CalendarView()
                     .tabItem {
                         Label("Calendar", systemImage: "calendar")
                     }
